@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="QuickTools : des outils en ligne gratuits pour simplifier votre quotidien.">
+  <title>QuickTools - Free Online Tools</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #182238;
+    }
+    header {
+      background: white;
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e8ebf1;
+    }
+    .logo { font-size: 25px; font-weight: bold; color: #5265e9; }
+    header span { color: #68738a; font-size: 14px; }
+    .hero {
+      text-align: center;
+      padding: 65px 20px 40px;
+    }
+    .hero h1 { font-size: 42px; margin-bottom: 12px; }
+    .hero p { color: #68738a; font-size: 17px; }
+    .search {
+      display: block;
+      width: min(500px, 90%);
+      margin: 28px auto;
+      padding: 15px;
+      border: 1px solid #dce1ed;
+      border-radius: 12px;
+      font-size: 15px;
+    }
+    .tools {
+      width: min(1050px, 90%);
+      margin: 20px auto 70px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+    .tool {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      border: 1px solid #e8ebf1;
+      box-shadow: 0 4px 15px #18223808;
+    }
+    .tool h2 { font-size: 19px; }
+    .tool p { color: #68738a; font-size: 14px; }
+    input, textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #dce1ed;
+      border-radius: 8px;
+      margin: 7px 0;
+      font-size: 14px;
+    }
+    button {
+      background: #5265e9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 16px;
+      cursor: pointer;
+      margin-top: 7px;
+    }
+    button:hover { background: #3d50d0; }
+    .result { font-weight: bold; margin-top: 12px; overflow-wrap: anywhere; }
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #68738a;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">QuickTools.</div>
+    <span>Simple tools. Free to use.</span>
+  </header>
+
+  <section class="hero">
+    <h1>Everyday tools, made simple.</h1>
+    <p>Free online tools to make your daily tasks easier.</p>
+    <input class="search" id="search" placeholder="Search for a tool..." oninput="searchTools()">
+  </section>
+
+  <main class="tools" id="tools">
+
+    <section class="tool" data-name="percentage calculator">
+      <h2>Percentage Calculator</h2>
+      <p>Calculate a percentage of a number.</p>
+      <input type="number" id="percent" placeholder="Percentage (%)">
+      <input type="number" id="number" placeholder="Your number">
+      <button onclick="percentage()">Calculate</button>
+      <div class="result" id="percentResult"></div>
+    </section>
+
+    <section class="tool" data-name="word counter text counter">
+      <h2>Word Counter</h2>
+      <p>Count words and characters in your text.</p>
+      <textarea id="wordText" rows="3" placeholder="Type or paste your text..." oninput="countWords()"></textarea>
+      <div class="result" id="wordResult">0 words · 0 characters</div>
+    </section>
+
+    <section class="tool" data-name="case converter text converter">
+      <h2>Text Case Converter</h2>
+      <p>Convert text to uppercase or lowercase.</p>
+      <textarea id="caseText" rows="3" placeholder="Enter your text..."></textarea>
+      <button onclick="convertCase('upper')">UPPERCASE</button>
+      <button onclick="convertCase('lower')">lowercase</button>
+      <div class="result" id="caseResult"></div>
+    </section>
+
+    <section class="tool" data-name="date calculator days">
+      <h2>Days Between Dates</h2>
+      <p>Find the number of days between two dates.</p>
+      <input type="date" id="date1">
+      <input type="date" id="date2">
+      <button onclick="dateDifference()">Calculate</button>
+      <div class="result" id="dateResult"></div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 QuickTools. Free online tools for everyone.
+  </footer>
+
+  <script>
+    function percentage() {
+      const p = Number(document.getElementById('percent').value);
+      const n = Number(document.getElementById('number').value);
+      if (document.getElementById('percent').value === '' ||
+          document.getElementById('number').value === '') {
+        document.getElementById('percentResult').textContent = 'Enter both numbers.';
+        return;
+      }
+      document.getElementById('percentResult').textContent =
+        (p * n / 100).toLocaleString();
+    }
+
+    function countWords() {
+      const text = document.getElementById('wordText').value.trim();
+      const words = text ? text.split(/\s+/).length : 0;
+      document.getElementById('wordResult').textContent =
+        words + ' words · ' + document.getElementById('wordText').value.length + ' characters';
+    }
+
+    function convertCase(type) {
+      const text = document.getElementById('caseText').value;
+      document.getElementById('caseResult').textContent =
+        type === 'upper' ? text.toUpperCase() : text.toLowerCase();
+    }
+
+    function dateDifference() {
+      const a = document.getElementById('date1').value;
+      const b = document.getElementById('date2').value;
+      if (!a || !b) {
+        document.getElementById('dateResult').textContent = 'Choose both dates.';
+        return;
+      }
+      const days = Math.abs(Date.parse(b) - Date.parse(a)) / 86400000;
+      document.getElementById('dateResult').textContent = days + ' days';
+    }
+
+    function searchTools() {
+      const query = document.getElementById('search').value.toLowerCase();
+      document.querySelectorAll('.tool').forEach(tool => {
+        tool.style.display = tool.dataset.name.includes(query) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>
